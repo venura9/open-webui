@@ -3,3 +3,8 @@ variable "azure_region" {
   type        = string
   default     = "Australia East"
 }
+
+variable "OPENAI_API_KEY" {
+  description = "Open AI Key"
+  type        = string
+}

@@ -6,15 +6,16 @@ variable "resource_group_name" {
 variable "location" {
   description = "Azure region"
   type        = string
+  default = "Australia East"
 }
 
 variable "openai_api_key" {
-  description = "API key for Azure OpenAI"
+  description = "API Key OpenAI"
   type        = string
   sensitive   = true
 }
 
-variable "openai_api_base_url" {
-  description = "Base URL for Azure OpenAI"
-  type        = string
-}
+# variable "openai_api_base_url" {
+#   description = "Base URL for Azure OpenAI"
+#   type        = string
+# }

@@ -5,9 +5,7 @@ terraform {
       version = ">= 4.0.0"
     }
   }
-
-  backend "remote" {
-  }
+  cloud {}
 }
 
 provider "azurerm" {
@@ -20,16 +18,28 @@ module "resource_group" {
   location            = var.azure_region
 }
 
-module "openai" {
-  source              = "./modules/openai"
-  resource_group_name = module.resource_group.resource_group_name
-  location            = var.azure_region
-}
-
 module "container_app" {
   source              = "./modules/container_app"
   resource_group_name = module.resource_group.resource_group_name
   location            = var.azure_region
-  openai_api_key      = module.openai.api_key
-  openai_api_base_url = module.openai.api_base_url
+  openai_api_key      = var.OPENAI_API_KEY
+}
+
+module "storage_account" {
+  source = "./modules/storage_account"
+  storage_account_name = "openwebuistorage001"
+  resource_group_name = module.resource_group.resource_group_name
+  location = var.azure_region
+}
+
+module "file_share_open_webui" {
+  source = "./modules/file_share"
+  storage_account_id = module.storage_account.storage_account_id
+  file_share_name = "openwebuifileshare"
+}
+
+module "file_share_ollama" {
+  source = "./modules/file_share"
+  storage_account_id = module.storage_account.storage_account_id
+  file_share_name = "ollamafileshare"
 }
