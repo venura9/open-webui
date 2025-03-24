@@ -1,0 +1,32 @@
+{
+    "name": "Azure tfcdk Golang Dev",
+    "dockerFile": "Dockerfile",
+    "forwardPorts": [8080, 3000],
+    "remoteEnv": {
+      "ARM_CLIENT_ID": "${localEnv:ARM_CLIENT_ID}",
+      "ARM_CLIENT_SECRET": "${localEnv:ARM_CLIENT_SECRET}",
+      "ARM_TENANT_ID": "${localEnv:ARM_TENANT_ID}",
+      "ARM_SUBSCRIPTION_ID": "${localEnv:ARM_SUBSCRIPTION_ID}",
+      "TF_CLOUD_ORGANIZATION": "${localEnv:TF_CLOUD_ORGANIZATION}",
+      "TF_WORKSPACE": "${localEnv:TF_WORKSPACE}",
+      "TF_API_TOKEN": "${localEnv:TF_API_TOKEN}"
+    },
+    "mounts": [
+      "source=${localEnv:HOME}/.azure,target=/root/.azure,type=bind",
+      "source=${localEnv:HOME}/.terraform.d,target=/root/.terraform.d,type=bind"
+    ],
+    "postCreateCommand": "go mod tidy",
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "terminal.integrated.defaultProfile.linux": "bash"
+        },
+        "extensions": [
+            "golang.go",
+            "hashicorp.terraform",
+            "ms-azuretools.vscode-docker"
+        ]
+
+    }
+  }
+}
