@@ -2,24 +2,16 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.0.0"
+      version = ">= 4.0.0"
     }
   }
 
   backend "remote" {
-    organization = var.terraform_organization
-    workspaces {
-      name = var.terraform_workspace
-    }
   }
 }
 
 provider "azurerm" {
   features {}
-  subscription_id = var.azure_subscription_id
-  client_id       = var.azure_client_id
-  client_secret   = var.azure_client_secret
-  tenant_id       = var.azure_tenant_id
 }
 
 module "resource_group" {
