@@ -14,7 +14,10 @@ resource "azurerm_container_app" "open_webui" {
     }
   }
 
-
+  # secret {
+  #   name  = "OPENAI_API_KEY"
+  #   value = var.openai_api_key
+  # }
 
   template {
 
