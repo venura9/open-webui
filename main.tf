@@ -39,8 +39,6 @@ module "container_app_frontend" {
   storage_name_azure_files     = module.file_share_open_webui.file_share_name
 }
 
-
-
 module "storage_account" {
   source               = "./modules/storage_account"
   storage_account_name = "openwebuistorage001"
