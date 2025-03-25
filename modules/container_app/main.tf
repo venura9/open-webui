@@ -25,22 +25,18 @@ resource "azurerm_container_app" "open_webui" {
     container {
       name   = "open-webui"
       image  = "ghcr.io/open-webui/open-webui:latest"
-      cpu    = "1" #missing 
-      memory = "2Gi" #missing 
+      cpu    = "1"
+      memory = "2Gi"
       env {
         name  = "OPENAI_API_KEY"
         value = var.openai_api_key
       }
-      # env {
-      #   name  = "OPENAI_API_BASE_URL"
-      #   value = var.openai_api_base_url
-      # }
     }
     container {
       name   = "ollama"
       image  = "ollama/ollama"
-      cpu    = "1" #missing 
-      memory = "2Gi" #missing 
+      cpu    = "1"
+      memory = "2Gi"
       env {
         name  = "OLLAMA_BASE_URL"
         value = "http://ollama:8000"

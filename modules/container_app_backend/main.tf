@@ -1,11 +1,10 @@
 resource "azurerm_container_app" "ollama" {
   name                = "ollama"
   resource_group_name = var.resource_group_name
-  # location            = var.location
   container_app_environment_id = var.container_app_environment_id
   revision_mode                = "Single"
 
-  ingress { #missing
+  ingress {
     external_enabled = false
     target_port      = 11434
     transport = "http"
@@ -19,8 +18,8 @@ resource "azurerm_container_app" "ollama" {
     container {
       name   = "ollama"
       image  = "ollama/ollama"
-      cpu    = "1" #missing 
-      memory = "2Gi" #missing 
+      cpu    = "1"
+      memory = "2Gi"
     }
   }
 }

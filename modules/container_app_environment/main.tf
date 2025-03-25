@@ -5,5 +5,5 @@ resource "azurerm_container_app_environment" "main" {
 }
 
 output "container_app_environment_id" {
-  value = azurerm_container_app.main.id
+  value = azurerm_container_app_environment.main.id
 }

@@ -9,13 +9,6 @@ variable "openai_api_key" {
   sensitive   = true
 }
 
-# variable "openai_api_base_url" {
-#   description = "Base URL for Azure OpenAI"
-#   type        = string
-# }
-
-
-#new
 variable "ollama_base_url" {
   description = "Base URL for Ollama"
   type        = string
@@ -23,5 +16,10 @@ variable "ollama_base_url" {
 
 variable "container_app_environment_id" {
   description = "Contaiener App Envirnment ID to create the App"
+  type        = string
+}
+
+variable "storage_name_azure_files" {
+  description = "Azure Files Storage Account Name"
   type        = string
 }

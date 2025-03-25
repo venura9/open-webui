@@ -1,11 +1,10 @@
 resource "azurerm_container_app" "open_webui" {
   name                = "open-webui"
   resource_group_name = var.resource_group_name
-  # location            = var.location
   container_app_environment_id = var.container_app_environment_id
   revision_mode                = "Single"
 
-  ingress { #missing
+  ingress {
     external_enabled = true
     target_port      = 8080
     transport = "http"
@@ -15,24 +14,43 @@ resource "azurerm_container_app" "open_webui" {
     }
   }
 
+
+
   template {
+
+    volume {
+      name         = "open-webui"
+      storage_type = "EmptyDir"
+    }
+
     container {
       name   = "open-webui"
       image  = "ghcr.io/open-webui/open-webui:latest"
-      cpu    = "1" #missing 
-      memory = "2Gi" #missing 
+      cpu    = "1"
+      memory = "2Gi"
+      volume_mounts {
+        name = "open-webui"
+        path = "/app/backend/data"
+      }
+
       env {
         name  = "OPENAI_API_KEY"
         value = var.openai_api_key
       }
-      env {
-        name  = "OLLAMA_BASE_URL"
-        value = var.ollama_base_url
-      }
       # env {
-      #   name  = "OPENAI_API_BASE_URL"
-      #   value = var.openai_api_base_url
+      #   name  = "OLLAMA_BASE_URL"
+      #   value = var.ollama_base_url
       # }
     }
-    }
   }
+}
+
+
+# resource "azurerm_container_app_environment_storage" "mount" {
+#   name                         = "mycontainerappstorage"
+#   container_app_environment_id = var.container_app_environment_id
+#   account_name                 = azurerm_storage_account.example.name
+#   share_name                   = var.storage_name_azure_files
+#   access_key                   = azurerm_storage_account.example.primary_access_key
+#   access_mode                  = "ReadOnly"
+# }
