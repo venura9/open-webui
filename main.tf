@@ -18,12 +18,27 @@ module "resource_group" {
   location            = var.azure_region
 }
 
-module "container_app" {
-  source              = "./modules/container_app"
+module "container_app_environment" {
+  source = "./modules/container_app_environment"
   resource_group_name = module.resource_group.resource_group_name
-  location            = var.azure_region
-  openai_api_key      = var.OPENAI_API_KEY
+  location = var.azure_region
 }
+
+module "container_app_backend" {
+  source = "./modules/container_app_backend"
+  resource_group_name = module.resource_group.resource_group_name
+  container_app_environment_id = module.container_app_environment.container_app_environment_id
+}
+
+module "container_app_frontend" {
+  source = "./modules/container_app_frontend"
+  resource_group_name = module.resource_group.resource_group_name
+  container_app_environment_id = module.container_app_environment.container_app_environment_id
+  openai_api_key = var.OPENAI_API_KEY
+  ollama_base_url = module.container_app_backend.container_app_backend_name
+}
+
+
 
 module "storage_account" {
   source = "./modules/storage_account"
