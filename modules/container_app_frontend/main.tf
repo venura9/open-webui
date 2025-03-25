@@ -1,5 +1,5 @@
 resource "azurerm_container_app" "open_webui" {
-  name                         = "open-webui"
+  name                         = "open-webui-fe"
   resource_group_name          = var.resource_group_name
   container_app_environment_id = var.container_app_environment_id
   revision_mode                = "Single"
@@ -21,10 +21,14 @@ resource "azurerm_container_app" "open_webui" {
 
   template {
 
+    # volume {
+    #   name         = "open-webui"
+    #   storage_type = "AzureFile"
+    #   storage_name = azurerm_container_app_environment_storage.files.name
+    # }
+
     volume {
-      name         = "open-webui"
-      storage_type = "AzureFile"
-      storage_name = azurerm_container_app_environment_storage.files.name
+      name = "open-webui"
     }
 
     container {
@@ -41,10 +45,10 @@ resource "azurerm_container_app" "open_webui" {
         name  = "OPENAI_API_KEY"
         value = var.openai_api_key
       }
-      env {
-        name  = "OLLAMA_BASE_URL"
-        value = var.ollama_base_url
-      }
+      # env {
+      #   name  = "OLLAMA_BASE_URL"
+      #   value = var.ollama_base_url
+      # }
     }
   }
 }
