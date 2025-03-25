@@ -14,7 +14,7 @@ resource "azurerm_container_app" "open_webui" {
   ingress { #missing
     external_enabled = true
     target_port      = 8080
-    transport = "http"
+    transport        = "http"
     traffic_weight {
       latest_revision = true
       percentage      = 100
