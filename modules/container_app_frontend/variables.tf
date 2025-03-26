@@ -29,3 +29,18 @@ variable "access_key" {
   type        = string
   sensitive   = true
 }
+
+variable "azure_storage_endpoint" {
+  description = "azure_storage_endpoint"
+  type        = string
+}
+
+variable "azure_storage_container_name" {
+  description = "azure_storage_container_name"
+  type        = string
+}
+
+variable "azure_storage_key" {
+  description = "azure_storage_key"
+  type        = string
+}
