@@ -33,14 +33,17 @@ variable "access_key" {
 variable "azure_storage_endpoint" {
   description = "azure_storage_endpoint"
   type        = string
+  default = "https://openwebuistorage001.blob.core.windows.net/"
 }
 
 variable "azure_storage_container_name" {
   description = "azure_storage_container_name"
   type        = string
+  default = "openwebui"
 }
 
 variable "azure_storage_key" {
   description = "azure_storage_key"
   type        = string
+  default = ""
 }

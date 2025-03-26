@@ -21,11 +21,11 @@ resource "azurerm_container_app" "open_webui" {
 
   template {
 
-    volume {
-      name         = "open-webui"
-      storage_type = "AzureFile"
-      storage_name = azurerm_container_app_environment_storage.files.name
-    }
+    # volume {
+    #   name         = "open-webui"
+    #   storage_type = "AzureFile"
+    #   storage_name = azurerm_container_app_environment_storage.files.name
+    # }
 
     # volume {
     #   name = "open-webui"
@@ -36,19 +36,19 @@ resource "azurerm_container_app" "open_webui" {
       image  = "ghcr.io/open-webui/open-webui:latest"
       cpu    = "1"
       memory = "2Gi"
-      volume_mounts {
-        name = "open-webui"
-        path = "/app/backend/data"
-      }
+      # volume_mounts {
+      #   name = "open-webui"
+      #   path = "/app/backend/data"
+      # }
 
       env {
         name  = "OPENAI_API_KEY"
         value = var.openai_api_key
       }
-      # env {
-      #   name  = "OLLAMA_BASE_URL"
-      #   value = var.ollama_base_url
-      # }
+      env {
+        name  = "OLLAMA_BASE_URL"
+        value = var.ollama_base_url
+      }
       env {
         name = "AZURE_STORAGE_ENDPOINT"
         value = var.azure_storage_endpoint
@@ -59,18 +59,17 @@ resource "azurerm_container_app" "open_webui" {
       }
       env {
         name = "AZURE_STORAGE_KEY"
-        value = var.azure_storage_key
+        value = var.access_key
       }
     }
   }
 }
 
-
-resource "azurerm_container_app_environment_storage" "files" {
-  name                         = "openwebui"
-  container_app_environment_id = var.container_app_environment_id
-  account_name                 = "openwebuistorage001"
-  share_name                   = var.storage_name_azure_files
-  access_key                   = var.access_key
-  access_mode                  = "ReadWrite"
-}
+# resource "azurerm_container_app_environment_storage" "files" {
+#   name                         = "openwebui"
+#   container_app_environment_id = var.container_app_environment_id
+#   account_name                 = "openwebuistorage001"
+#   share_name                   = var.storage_name_azure_files
+#   access_key                   = var.access_key
+#   access_mode                  = "ReadWrite"
+# }
