@@ -24,13 +24,13 @@ module "container_app_environment" {
   location            = var.azure_region
 }
 
-module "container_app_backend" {
-  source                       = "./modules/container_app_backend"
-  resource_group_name          = module.resource_group.resource_group_name
-  container_app_environment_id = module.container_app_environment.container_app_environment_id
-  storage_name_azure_files     = "ollamafileshare"
-  access_key                   = module.storage_account.storage_account_key
-}
+# module "container_app_backend" {
+#   source                       = "./modules/container_app_backend"
+#   resource_group_name          = module.resource_group.resource_group_name
+#   container_app_environment_id = module.container_app_environment.container_app_environment_id
+#   storage_name_azure_files     = "ollamafileshare"
+#   access_key                   = module.storage_account.storage_account_key
+# }
 
 module "container_app_frontend" {
   source                       = "./modules/container_app_frontend"

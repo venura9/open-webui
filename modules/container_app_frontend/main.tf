@@ -1,5 +1,5 @@
 resource "azurerm_container_app" "open_webui" {
-  name                         = "open-webui-fe"
+  name                         = "open-webui"
   resource_group_name          = var.resource_group_name
   container_app_environment_id = var.container_app_environment_id
   revision_mode                = "Single"
@@ -21,15 +21,15 @@ resource "azurerm_container_app" "open_webui" {
 
   template {
 
-    # volume {
-    #   name         = "open-webui"
-    #   storage_type = "AzureFile"
-    #   storage_name = azurerm_container_app_environment_storage.files.name
-    # }
-
     volume {
-      name = "open-webui"
+      name         = "open-webui"
+      storage_type = "AzureFile"
+      storage_name = azurerm_container_app_environment_storage.files.name
     }
+
+    # volume {
+    #   name = "open-webui"
+    # }
 
     container {
       name   = "open-webui"
