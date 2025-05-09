@@ -61,6 +61,10 @@ resource "azurerm_container_app" "open_webui" {
         name = "AZURE_STORAGE_KEY"
         value = var.access_key
       }
+      env {
+        name  = "DATABASE_URL"
+        value = var.postgres_url
+      }
     }
   }
 }

@@ -47,3 +47,8 @@ variable "azure_storage_key" {
   type        = string
   default = ""
 }
+
+variable "postgres_url" {
+  description = "The URL of the PostgreSQL database"
+  type        = string
+}
