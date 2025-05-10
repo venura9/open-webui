@@ -5,13 +5,14 @@ resource "azurerm_container_app" "ollama" {
   revision_mode                = "Single"
 
   ingress {
-    external_enabled = false
+    external_enabled = false  # Internal access only
     target_port      = 11434
     transport        = "http"
     traffic_weight {
       latest_revision = true
       percentage      = 100
     }
+    allow_insecure_connections = true  # Allow HTTP connections
   }
 
   template {
@@ -25,8 +26,38 @@ resource "azurerm_container_app" "ollama" {
     container {
       name   = "ollama"
       image  = "ollama/ollama"
-      cpu    = "1"
-      memory = "2Gi"
+      cpu    = "2"
+      memory = "4Gi"
+
+      env {
+        name  = "OLLAMA_HOST"
+        value = "0.0.0.0"
+      }
+
+      env {
+        name  = "OLLAMA_ORIGINS"
+        value = "*"
+      }
+
+      env {
+        name  = "OLLAMA_CORS"
+        value = "true"
+      }
+
+      liveness_probe {
+        transport = "HTTP"
+        port      = 11434
+        path      = "/"
+        initial_delay = 30
+        timeout      = 1
+      }
+
+      readiness_probe {
+        transport = "HTTP"
+        port      = 11434
+        path      = "/"
+        timeout   = 1
+      }
 
       volume_mounts {
         name = "ollama"
@@ -47,4 +78,8 @@ resource "azurerm_container_app_environment_storage" "files" {
 
 output "container_app_backend_name" {
   value = azurerm_container_app.ollama.name
+}
+
+output "ollama_url" {
+  value = "http://${azurerm_container_app.ollama.name}.internal:11434"
 }

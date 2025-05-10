@@ -2,14 +2,22 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.23.0"
+      version = ">= 4.23.0, < 5.0.0"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = "~> 0.9.0"
     }
   }
   cloud {}
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
 }
 
 module "resource_group" {
@@ -20,6 +28,12 @@ module "resource_group" {
 
 module "container_app_environment" {
   source              = "./modules/container_app_environment"
+  resource_group_name = module.resource_group.resource_group_name
+  location            = var.azure_region
+}
+
+module "openai" {
+  source              = "./modules/openai"
   resource_group_name = module.resource_group.resource_group_name
   location            = var.azure_region
 }
@@ -39,7 +53,7 @@ module "container_app_frontend" {
   storage_name_azure_files     = "openwebuifileshare"
   access_key                   = module.storage_account.storage_account_key
   openai_api_key               = var.OPENAI_API_KEY
-  ollama_base_url              = "http://${module.container_app_backend.container_app_backend_name}:11434"
+  ollama_base_url              = "http://ollama.internal:11434"
   postgres_url                 = "postgresql://${module.postgresql_server.fqdn}:5432/postgres?user=adminuser&password=${random_password.postgres_password.result}&sslmode=require"
 }
 
@@ -65,9 +79,10 @@ module "file_share_ollama" {
 module "postgresql_server" {
   source              = "./modules/postgresql_server"
   resource_group_name = module.resource_group.resource_group_name
-  location           = var.azure_region
-  postgres_password  = random_password.postgres_password.result
-  name_suffix       = random_string.postgres_suffix.result
+  location            = var.azure_region
+  postgres_password   = random_password.postgres_password.result
+  name_suffix         = random_string.postgres_suffix.result
+  timestamp           = time_static.deployment_time.rfc3339
 }
 
 resource "random_password" "postgres_password" {
@@ -81,3 +96,5 @@ resource "random_string" "postgres_suffix" {
   special = false
   upper   = false
 }
+
+resource "time_static" "deployment_time" {}

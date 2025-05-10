@@ -47,18 +47,18 @@ resource "azurerm_container_app" "open_webui" {
       }
       env {
         name  = "OLLAMA_BASE_URL"
-        value = var.ollama_base_url
+        value = "http://ollama.internal.${split("/", var.container_app_environment_id)[8]}:11434"
       }
       env {
-        name = "AZURE_STORAGE_ENDPOINT"
+        name  = "AZURE_STORAGE_ENDPOINT"
         value = var.azure_storage_endpoint
       }
       env {
-        name = "AZURE_STORAGE_CONTAINER_NAME"
+        name  = "AZURE_STORAGE_CONTAINER_NAME"
         value = var.azure_storage_container_name
       }
       env {
-        name = "AZURE_STORAGE_KEY"
+        name  = "AZURE_STORAGE_KEY"
         value = var.access_key
       }
       env {
